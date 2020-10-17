@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import CardList from './CardList';
 import SearchBox from './SearchBox';
+import './App.css'
 import { robots } from './robots'; //Because robots.js doesn't return only 1 object, we have to use brackets!
 
 // const App = () => {
@@ -29,7 +30,7 @@ class App extends Component {
         // console.log(filteredRobots);
         return (
             <div className='tc'>
-                <h1>RoboFriends</h1>
+                <h1 className="f2">RoboFriends</h1>
                 < SearchBox searchChange = {this.onSearchChange}/>        
                 < CardList robots={filteredRobots} />
             </div>
