@@ -2,9 +2,10 @@ import React, {Component} from 'react';
 // COMPONENTS
 import CardList from '../components/CardList';
 import SearchBox from '../components/SearchBox';
+import ErrorBoundry from '../components/ErrorBoundry';
 import Scroll from '../components/Scroll';
 import '../containers/App.css'
-// import { robots } from './robots'; //Because robots.js doesn't return only 1 object, we have to use brackets!
+// import { robots } from '../  robots'; //Because robots.js doesn't return only 1 object, we have to use brackets!
 
 // const App = () => {
 class App extends Component {
@@ -36,6 +37,7 @@ class App extends Component {
         const filteredRobots = robots.filter(robot => {
             return robot.name.toLowerCase().includes(searchfield.toLowerCase());
         })
+        //if(!robots.length)
         if(robots.length === 0) {
             return <h1 className="tc">Loading</h1>
         } else {
@@ -45,7 +47,9 @@ class App extends Component {
                     <h1 className="f2">RoboFriends</h1>
                     < SearchBox searchChange = {this.onSearchChange}/>    
                     <Scroll>
-                        < CardList robots={filteredRobots} />
+                        <ErrorBoundry>
+                            < CardList robots={filteredRobots} />
+                        </ErrorBoundry>
                     </Scroll>    
                 </div>
             );

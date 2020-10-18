@@ -1,5 +1,5 @@
 import React from 'react';
-// import { robots } from './robots'; //Because robots.js doesn't return only 1 object, we have to use brackets!
+// import { robots } from '../robots'; //Because robots.js doesn't return only 1 object, we have to use brackets!
 import Card from './Card';
 
 
@@ -34,7 +34,7 @@ const CardList = ({robots}) => {
                             id={robots[i].id}
                             username={robots[i].username}
                             name={robots[i].name}
-                            email={robots[0].email}
+                            email={robots[i].email}
                         />
                     ); 
                 })
