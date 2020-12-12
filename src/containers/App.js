@@ -8,20 +8,76 @@ import ErrorBoundry from '../components/ErrorBoundry';
 import Scroll from '../components/Scroll';
 import '../containers/App.css'
 
-import { setSearchfield } from '../actions';
+import { requestRobots, setSearchfield } from '../actions';
 
 const mapStateToProps = state => { //What state needs to be listened to and sent down as props
     return {
         // searchField: state.searchRobots.searchField
-        searchField: state.searchField
+        searchField: state.searchRobots.searchField,
+        robots: state.requestRobots.robots,
+        isPending: state.requestRobots.isPending,
+        error: state.requestRobots.error
     }
 }
 
 const mapDispatchToProps = (dispatch) => { //What props need to be listened to that are actions that need to get dispatched
     return {
-        onSearchChange: (event) => dispatch(setSearchfield(event.target.value))
+        onSearchChange: (event) => dispatch(setSearchfield(event.target.value)),
+        //onRequestRobots: () => requestRobots(dispatch)
+        onRequestRobots: () => dispatch(requestRobots())
     }
 }
+
+// export default App;
+//OLD CODE AGAIN
+class App extends Component {
+    // constructor() { //DONT NEED THE CONSTRUCTOR ANYMORE CAUSE THERE IS NO MORE STATES
+    //     super()
+    //     this.state = {
+    //         robots: [],
+    //         //searchfield: ''
+    //     }
+    // }
+
+    componentDidMount() {
+        //console.log(this.props.store.getState()); //Consoles the app state! (REDUX)
+        // fetch('https://jsonplaceholder.typicode.com/users')
+        //     .then(response => response.json())
+        //     .then(users => { this.setState({ robots: users }) });
+        this.props.onRequestRobots(); //ROBOTS ARE GOING TO BE PASSED AS PROPS (REDUX)
+    }
+
+    // onSearchChange = (event) => {
+    //     this.setState({ searchfield: event.target.value })
+    // }
+
+    render() {
+        //const { robots, searchfield } = this.state;
+        //const { robots } = this.state; //DONT NEED WITH REDUX
+        const { searchField, onSearchChange, robots, isPending } = this.props;  
+        const filteredRobots = robots.filter(robot => {
+            return robot.name.toLowerCase().includes(searchField.toLowerCase());
+        })
+        //return !robots.length ?
+        return isPending ? //IF PENDING, RETURN LOADING SCREEN, IF API CALL SUCCESSFUL, RETURN ROBOTS
+            <h1>Loading</h1> :
+            (
+                <div className='tc'>
+                    <h1 className='f1'>RoboFriends</h1>
+                    {/* <SearchBox searchChange={this.onSearchChange} /> */}
+                    <SearchBox searchChange={onSearchChange} />
+                    <Scroll>
+                        <ErrorBoundry>
+                            <CardList robots={filteredRobots} />
+                        </ErrorBoundry>
+                        
+                    </Scroll>
+                </div>
+            );
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
 
 // import { robots } from '../  robots'; //Because robots.js doesn't return only 1 object, we have to use brackets!
 
@@ -93,52 +149,3 @@ const mapDispatchToProps = (dispatch) => { //What props need to be listened to t
 //             );
 //         }
 // }
-
-// export default App;
-//ANDREIS CODE AGAIN
-class App extends Component {
-    constructor() {
-        super()
-        this.state = {
-            robots: [],
-            //searchfield: ''
-        }
-    }
-
-    componentDidMount() {
-        //console.log(this.props.store.getState()); //Consoles the app state! (REDUX)
-        fetch('https://jsonplaceholder.typicode.com/users')
-            .then(response => response.json())
-            .then(users => { this.setState({ robots: users }) });
-    }
-
-    // onSearchChange = (event) => {
-    //     this.setState({ searchfield: event.target.value })
-    // }
-
-    render() {
-        //const { robots, searchfield } = this.state;
-        const { robots } = this.state;
-        const { searchField, onSearchChange } = this.props;  
-        const filteredRobots = robots.filter(robot => {
-            return robot.name.toLowerCase().includes(searchField.toLowerCase());
-        })
-        return !robots.length ?
-            <h1>Loading</h1> :
-            (
-                <div className='tc'>
-                    <h1 className='f1'>RoboFriends</h1>
-                    {/* <SearchBox searchChange={this.onSearchChange} /> */}
-                    <SearchBox searchChange={onSearchChange} />
-                    <Scroll>
-                        <ErrorBoundry>
-                            <CardList robots={filteredRobots} />
-                        </ErrorBoundry>
-                        
-                    </Scroll>
-                </div>
-            );
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
