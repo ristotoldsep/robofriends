@@ -13,7 +13,8 @@ export const setSearchfield = (text) => ({
     //}  
 })
 
-export const requestRobots = () => (dispatch) => {
+export const requestRobots = () => (dispatch) => { /*FUNCTION THAT RETURNS A FUNCTION  (HIGHER ORDER FX)
+    and then triggers redux-thunk, sees if any actions return a function instead of  an object*/
     dispatch({ type: REQUEST_ROBOTS_PENDING });
     fetch('https://jsonplaceholder.typicode.com/users')
         .then(response => response.json())
