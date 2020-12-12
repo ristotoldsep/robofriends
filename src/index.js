@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import { createLogger } from 'redux-logger'; //Logger middleware 
 // 1) import Card from './Card';
 // 2) import CardList from './CardList';
 // 3) Now making "App" as father of all components!
@@ -12,11 +13,15 @@ import 'tachyons';
 import { searchRobots } from './reducers';
 // import { robots } from './robots'; //Because robots.js doesn't return only 1 object, we have to use brackets!
 
-const store = createStore(searchRobots)
+const logger = createLogger();
+const store = createStore(searchRobots, applyMiddleware(logger)) //THIS IS THE STORE 
+//(ONE SINGLE STATE) AND PARAMETER IS THE REDUCER!!!!
 
 ReactDOM.render(
   <React.StrictMode>
-   < App store={store}/>
+    <Provider store={store}>
+      < App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
