@@ -2,6 +2,8 @@ React app that pulls from robohash API for displaying robots with components lik
 
 Later on tried React Hooks, and replaced component and class with hooks (useState & useEffect). [OLDER VERSION IS DEPLOYED]
 
+Added another branch, where I implemented Redux!
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 
